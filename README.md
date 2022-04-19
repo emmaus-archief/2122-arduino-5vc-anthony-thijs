@@ -23,7 +23,7 @@ Je kunt een circuit bijvoorbeeld als volgt maken
 
 
 ## Stap 2: Test Code
-- [ ] Je hebt code gemaakt waarmee je kunt testen dat alle onderdelen op je circuit goed werken. Dit sla je op in GitHub.
+- [x] Je hebt code gemaakt waarmee je kunt testen dat alle onderdelen op je circuit goed werken. Dit sla je op in GitHub.
 
 In de map voor deze stap zet je de test-code (het .ino bestand) voor je circuit. De naam van een .ino bestand mag geen spaties bevatten en het .ino bestand moet in een map staan met dezelfde naam.
 
@@ -32,8 +32,8 @@ De test-code is een ander programma dan je eindcode. De testcode laat snel zien 
 De voorbeeldcode in deze repo is een goed begin van testcode. Je kunt die zelf afmaken en in deze map zetten.
 
 ## Stap 3: Toestandsdiagram 
-- [ ] Je hebt een toestandsdiagram gemaakt. Dit sla je op in GitHub.
-- [ ] Je hebt je docent gevraagd om feedback over je toestandsdiagram. De feedback heb je verwerkt. Het uiteindelijke resultaat sla je weer op in GitHub.
+- [x] Je hebt een toestandsdiagram gemaakt. Dit sla je op in GitHub.
+- [x] Je hebt je docent gevraagd om feedback over je toestandsdiagram. De feedback heb je verwerkt. Het uiteindelijke resultaat sla je weer op in GitHub.
 
 In deze map zet je een tekening van je toestandsdiagram.
 
