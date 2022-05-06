@@ -51,7 +51,7 @@ void setup() {
   pinMode(downPin, INPUT);
   pinMode(leftPin, INPUT);
   pinMode(rightPin, INPUT);
-  lcd.begin(16, 2);
+  lcd.begin(16, 2)//startplek
   lcd.createChar(1, player);//maakt speler
   lcd.setCursor(playerX, playerY);//plek van speler
   lcd.write((byte)1);//print speler
