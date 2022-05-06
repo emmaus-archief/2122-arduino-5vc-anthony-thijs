@@ -117,7 +117,7 @@ void loop() {
   }
   if (digitalRead(leftPin) == HIGH) {
     toestand = tLeft;
-    if(toestand == tLeft && playerX > 0){
+    if(toestand == tLeft && playerX > random){
      
     lcd.createChar(2, bone);//maakt bot obstakel
       lcd.setCursor(boneX, boneY);//plek van obstakel
@@ -129,7 +129,7 @@ void loop() {
   }
     if (digitalRead(downPin) == HIGH) {
     toestand = tDown;
-    if(toestand == tDown && playerY == 0){
+    if(toestand == tDown && playerY == random){
      
    lcd.createChar(2, bone);//maakt bot obstakel
       lcd.setCursor(boneX, boneY);//plek van obstakel
@@ -141,7 +141,7 @@ void loop() {
     }
     if (digitalRead(downPin) == HIGH) {
     toestand = tDown;
-    if(toestand == tDown && playerY == 0){
+    if(toestand == tDown && playerY == random){
      
    lcd.createChar(2, bone);//maakt bot obstakel
       lcd.setCursor(boneX, boneY);//plek van obstakel
