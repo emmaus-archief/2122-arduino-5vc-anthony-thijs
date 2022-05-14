@@ -141,6 +141,8 @@ void loop() {
      lcd.setCursor(playerX, playerY);//plek van speler
      lcd.write((byte)1);//print speler
      playerY = playerY - 1;
+     delay(10);
+     lcd.clear();
      y = y + 1;
      lcd.setCursor(delX, delY);
      lcd.print(" ");
@@ -150,36 +152,48 @@ void loop() {
 
   if (digitalRead(downPin) == HIGH) {
     knopStatus = tDown;
-  if(knopStatus == tDown && playerY == 0){
+  if(knopStatus == tDown){
      lcd.createChar(1, player);//maakt speler
      lcd.setCursor(playerX, playerY);//plek van speler
      lcd.write((byte)1);//print speler
      playerY = playerY + 1;
+     delay(10);
+     lcd.clear();
+     y = y - 1;
+     lcd.setCursor(delX, delY);
+     lcd.print(" ");
      delay(50);
     }
     }  
 
-      if (digitalRead(leftPin) == HIGH) {
-    knopStatus = tLeft;
-    if(knopStatus == tLeft && playerX > 0){
-
+  if (digitalRead(leftPin) == HIGH) {
+      knopStatus = tLeft;
+    if(knopStatus == tLeft){
      lcd.createChar(1, player);//maakt speler
      lcd.setCursor(playerX, playerY);//plek van speler
      lcd.write((byte)1);//print speler
-
      playerX = playerX - 1;
+     delay(10);
+     lcd.clear();
+     x = x + 1;
+     lcd.setCursor(delX, delY);
+     lcd.print(" ");
      delay(50);
     }
     }
 
-    if (digitalRead(rightPin) == HIGH) {
+ if (digitalRead(rightPin) == HIGH) {
     knopStatus = tRight;
     if(knopStatus == tRight && playerX < 13){
      lcd.createChar(1, player);//maakt speler
      lcd.setCursor(playerX, playerY);//plek van speler
      lcd.write((byte)1);//print speler
-
      playerX = playerX + 1;
+     delay(10);
+     lcd.clear();
+     x = x - 1;
+     lcd.setCursor(delX, delY);
+     lcd.print(" ");
      delay(50);
     }
 
@@ -192,11 +206,16 @@ void loop() {
     lcd.setCursor(boneX + 1, boneY);
     lcd.print(" ");
     }
+    
+    if(boneX < 0){
+      boneX = 15;
+      }
+    
     if(boneX == 0){
       loopSwitch = loopSwitch + 1;
       }
       
-    if(loopSwitch == 3){
+    if(loopSwitch == 1000){
       lcd.setCursor(7,0);
       lcd.print("!!!");
       warning = true;
@@ -219,9 +238,7 @@ void loop() {
       beamShot = false;  
       }
       
-    if(boneX < 0){
-      boneX = 15;
-      }
+    
 
 
   if (playerX == boneX && playerY == boneY || playerX == beamX && playerY == beamY){
@@ -243,7 +260,7 @@ void loop() {
     lcd.setCursor(0,0);
     lcd.print("Druk knop");
     lcd.setCursor(0,1);
-    lcd.print("Groen in");
+    lcd.print("Rood in");
     gameStatus = GAMEOVER2; 
     }
   }
