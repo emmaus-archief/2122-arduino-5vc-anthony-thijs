@@ -20,13 +20,17 @@ int boneY3 = 0;
 bool bot2 = false;
 int loopSwitch = 0;
 int boneSnelheid = 200;
+unsigned long tijd = 0;
 
 int gameStatus = 0;
 const int BEGINSCHERM1 = 0;
 const int BEGINSCHERM2 = 1;
-const int SPELEN = 2;
-const int GAMEOVER1 = 3;
-const int GAMEOVER2 = 4;
+const int BEGINSCHERM3 = 2;
+const int SPELEN = 3;
+const int GAMEOVER1 = 4;
+const int GAMEOVER2 = 5;
+const int GEWONNEN = 6;
+const int GEWONNEN2 = 7;
 
 int knopStatus = 1;
 const int tUp = 1;
@@ -36,6 +40,8 @@ const int tRight = 4;
 
 int score = 0;
 int scorePos = 14;
+int lives = 20;
+int livesPos = 14;
 
 //characters(obstacle/player)
 const byte player[8] = {
@@ -60,8 +66,16 @@ const byte bone[8] = {
   0b11011
 };
 
-
-
+const byte star[8] = {
+  0b00000,
+  0b00100,
+  0b10101,
+  0b01110,
+  0b00100,
+  0b01010,
+  0b10001,
+  0b00000
+};
 
 void setup() {
   pinMode(upPin, INPUT);
@@ -70,31 +84,45 @@ void setup() {
   pinMode(leftPin, INPUT);
   pinMode(rightPin, INPUT);
   lcd.begin(16, 2);
- gameStatus == BEGINSCHERM1;
 }
 
-void loop() {
+void loop() { 
 
 //Beginscherm
-  if (gameStatus == BEGINSCHERM1) {
-    lcd.print(" Knop 1&2 is ^ v");
+  if (gameStatus == BEGINSCHERM1){
+    lcd.setCursor(3,0);
+    lcd.print("Gl!tchw0r1d");
+    lcd.setCursor(2,1);
+    lcd.print("Druk op groen");
+    lcd.autoscroll();
+    delay(1000);
+    if(digitalRead(upPin)== HIGH){
+      lcd.clear();
+      lcd.noAutoscroll();
+      gameStatus = BEGINSCHERM2;
+      delay(200);
+      }
+    }
+    
+  if (gameStatus == BEGINSCHERM2) {
+    lcd.print(" Groen&geel: ^ v");
     lcd.setCursor(0,1);
-    lcd.print(" Knop 3&4 is < >");
+    lcd.print("Wit&rood: < >");
     lcd.setCursor(0,0);
     }
 
-  if(gameStatus == BEGINSCHERM1){
+  if(gameStatus == BEGINSCHERM2){
     if (digitalRead(upPin)== HIGH) {
     lcd.clear();
-    lcd.print("Druk knop");
+    lcd.print("Druk geel");
     lcd.setCursor(0,1);
-    lcd.print("Geel in");
+    lcd.print("om te starten");
     lcd.setCursor(0,0);
-   gameStatus = BEGINSCHERM2;
+   gameStatus = BEGINSCHERM3;
     }
   }
 
-  if (gameStatus == BEGINSCHERM2){ 
+  if (gameStatus == BEGINSCHERM3){ 
     if (digitalRead(downPin)== HIGH){
     lcd.clear();
     gameStatus = SPELEN;
@@ -123,11 +151,14 @@ void loop() {
     lcd.setCursor(boneX3, boneY3);//plek van obstakel
     lcd.write((byte)2);//print bot
 
-    lcd.setCursor(13, 0);
+    lcd.setCursor(scorePos, 0);
     lcd.print(score);
 
+    lcd.setCursor(livesPos, 1);
+    lcd.print(lives);
+
     if(score > 99){
-      scorePos = 14;
+      scorePos = 13;
       }
 
     //beweging speler
@@ -202,7 +233,7 @@ void loop() {
        
     if(loopSwitch == 2 && boneY3 == boneY2){
       boneY3 = boneY;
-      boneX3 = boneX + 10;
+      boneX3 = boneX + 13;
       loopSwitch = 0;
       }
     if(loopSwitch == 2 && boneY3 == boneY){
@@ -229,28 +260,95 @@ void loop() {
         }
       }
 
-  if (playerX == boneX && playerY == boneY || playerX == boneX2 && playerY == boneY2 || playerX == boneX3 && playerY == boneY3){
+//schade
+  if(playerX == boneX && playerY == boneY || playerX == boneX2 && playerY == boneY2 || playerX == boneX3 && playerY == boneY3){
+    lives--;
+    }      
+
+//win,verlies conditie
+  if (lives == 0){
         lcd.clear();
         gameStatus = GAMEOVER1;
+    }   
+  }
+
+  if (playerX == 13){
+    gameStatus = GEWONNEN;
     }
-   
-  }      
+
+  if (gameStatus == GEWONNEN){
+    playerX = 0;
+    playerY = 1;
+    boneX = 13;
+    boneX2 = 20;
+    lcd.setCursor(3,0);
+    lcd.print("YOU WON");
+    }  
+
+  if (gameStatus == GEWONNEN){
+    if(digitalRead(upPin) == HIGH){
+      lcd.clear();
+      gameStatus = GEWONNEN2;
+      }    
+    }
+
+  if (gameStatus == GEWONNEN2){
+    lcd.setCursor (4, 0);
+      lcd.print("score:");
+      lcd.setCursor (10,0);
+      lcd.print(score);
+      if(score > 299){
+        for(int i = 0; i < 4; i++){
+          lcd.createChar(3, star);
+          lcd.setCursor(1 + i, 1);
+          lcd.write((byte)3);
+          }
+      lcd.setCursor (5,1);
+      lcd.print("Legendary");  
+        }
+      if(score > 199 && score < 300){
+        for(int i = 0; i < 3; i++){
+          lcd.createChar(3, star);
+          lcd.setCursor(1 + i, 1);
+          lcd.write((byte)3);
+        }
+      lcd.setCursor (5,1);
+      lcd.print("Epic"); 
+      } 
+      if(score > 50 && score < 200){
+        for(int i = 0; i < 2; i++){
+          lcd.createChar(3, star);
+          lcd.setCursor(i, 1);
+          lcd.write((byte)3);
+        }
+      lcd.setCursor (5,1);
+      lcd.print("Cool"); 
+    }
+      
+  if (gameStatus == GEWONNEN2){ 
+    if(digitalRead(rightPin)== HIGH) {
+    lcd.clear();
+    gameStatus = BEGINSCHERM2;
+    delay(500);
+    }
+  }  
 
   if (gameStatus == GAMEOVER1){
     playerX = 0;
     playerY = 1;
     boneX = 13;
-    boneX2 = 20;
+    boneX2 = 23;
+    boneX3 = 24;
     lcd.setCursor (4,0);
-    lcd.print("GAMEOVER");
-    lcd.setCursor (4, 1);
+    lcd.print("get dunked on");
+    lcd.setCursor (2, 1);
     lcd.print("score:");
     lcd.setCursor (10,1);
     lcd.print(score);
     }
 
   if (gameStatus == GAMEOVER1){ 
-    if(digitalRead(leftPin)== HIGH){
+    if(digitalRead(upPin)== HIGH){
     score = 0;
     lcd.clear();
     lcd.setCursor(0,0);
@@ -264,8 +362,9 @@ void loop() {
   if (gameStatus == GAMEOVER2){ 
     if(digitalRead(rightPin)== HIGH) {
     lcd.clear();
-    gameStatus = BEGINSCHERM1;
+    gameStatus = BEGINSCHERM2;
     delay(500);
     }
   }
+}
 }
